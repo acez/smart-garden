@@ -1,0 +1,39 @@
+@startuml
+'https://plantuml.com/component-diagram
+
+package "House" {
+    node "Solar Panel" as house_solar_panel
+    node "Battery" as house_battery
+    node "DC to AC converter" as converter
+    node "Sensor: Light" as house_sensor_light
+
+    house_solar_panel -> house_battery
+    house_battery -> converter
+}
+
+package "Controller" {
+    node "ESP8266 Microcontroller" as controller_esp8266
+}
+
+package "Greenhouse" {
+    node "Waterpump Relay" as greenhouse_waterpump_relay
+    node "Water pump" as greenhouse_waterpump
+    node "Sensor: Temperature" as greenhouse_sensor_temp
+    node "Sensor: Soil humidity" as greenhouse_sensor_soilhum
+
+    greenhouse_waterpump_relay -> greenhouse_waterpump
+}
+
+package "Pool" {
+    node "Pool pump" as poolpump
+}
+
+house_battery --> controller_esp8266
+house_battery --> greenhouse_waterpump_relay
+greenhouse_sensor_temp --> controller_esp8266
+greenhouse_sensor_soilhum --> controller_esp8266
+house_sensor_light --> controller_esp8266
+controller_esp8266 --> greenhouse_waterpump_relay
+converter --> poolpump
+
+@enduml
